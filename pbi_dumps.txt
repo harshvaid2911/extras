@@ -1,0 +1,13 @@
+If(Weekday(DateAdd(Now(),48,Hours))=7,Text(DateAdd(Now(),96,Hours)),If(Weekday(DateAdd(Now(),48,Hours))=1,DateAdd(Now(),72,Hours), DateAdd(Now(), 48, Hours)))
+
+
+
+
+If(
+    Weekday(DateAdd(Now(), 72, Hours)) = 7, DateAdd(Now(), 120, Hours), If(Weekday(DateAdd(Now(), 72, Hours))=1,DateAdd(Now(), 96, Hours), DateAdd(Now(), 72, Hours))
+)
+
+
+
+
+If(False_positiveDD.Selected.Value <> "", Patch(DLP_VOILATIONS_FORM ,LookUp(DLP_VOILATIONS_FORM, ID = Value(DataCardValue7.Text)),{First_Followup:Date(Blank(), Blank(),Blank())+Time(Blank(), Blank(), Blank()), Second_Followup:Date(Blank(), Blank(),Blank())+Time(Blank(), Blank(), Blank())})); Refresh(DLP_VOILATIONS_FORM);
