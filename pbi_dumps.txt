@@ -11,3 +11,518 @@ If(
 
 
 If(False_positiveDD.Selected.Value <> "", Patch(DLP_VOILATIONS_FORM ,LookUp(DLP_VOILATIONS_FORM, ID = Value(DataCardValue7.Text)),{First_Followup:Date(Blank(), Blank(),Blank())+Time(Blank(), Blank(), Blank()), Second_Followup:Date(Blank(), Blank(),Blank())+Time(Blank(), Blank(), Blank())})); Refresh(DLP_VOILATIONS_FORM);
+
+
+Set(secondmail, If(
+    Weekday(DateAdd(Now(), 72, Hours)) = 7, DateAdd(Now(), 120, Hours), If(Weekday(DateAdd(Now(), 72, Hours))=1,DateAdd(Now(), 96, Hours), DateAdd(Now(), 72, Hours))
+));
+Set( 
+    firstmail, If(Weekday(DateAdd(Now(),48,Hours))=7,Text(DateAdd(Now(),96,Hours)),If(Weekday(DateAdd(Now(),48,Hours))=1,DateAdd(Now(),72,Hours), DateAdd(Now(), 48, Hours)))
+);
+IfError(
+Office365Outlook.SendEmailV2(DataCardValue33.Text, "Sent mail on " &DataCardValue34 &" ", "Test <b>Body</b> <br/>Regards, <br/>IPG Team", {Cc:DataCardValue23.Text}), Notify("Error occured. Email was not sucessfull"), Patch(DLP_VOILATIONS_FORM ,LookUp(DLP_VOILATIONS_FORM, ID = Value(DataCardValue7.Text)),{Initial_Mail:Now(), First_Followup:DateTimeValue(firstmail), Second_Followup:DateTimeValue(secondmail)})
+); Refresh([@DLP_VOILATIONS_FORM])
+
+
+SELECT TOP 0 *
+INTO NewTable
+FROM TableStructureIWishToClone
+
+
+
+
+Select * Into <DestinationTableName> From <SourceTableName> Where 1 = 2
+
+Note that this will not copy indexes, keys, etc.
+
+If you want to copy the entire structure, you need to generate a Create Script of the table. You can use that script to create a new table with the same structure. You can then also dump the data into the new table if you need to. 
+
+
+
+
+=IF(AND(G2=G1, A2=A1), E1&","&D2, D2)
+
+=IF(AND(G4=G5, A4=A5), (F5=F4), G4)
+
+
+
+
+
+
+
+if(empty(items('Apply_to_each')?['PasswordLastSet']), 
+   items('Apply_to_each')?['PasswordLastSet'],
+   addMinutes(
+       addDays(formatDateTime('1/1/1900','dd/MM/yyyy'),
+           sub(int(
+               first
+               (split
+                (items('Apply_to_each')?['PasswordLastSet'], '.')
+                )
+               ), 2
+			)
+           ), int(
+               substring(last(
+                   split(
+                       items('Apply_to_each')?['PasswordLastSet'], '.'
+                       )
+                   ) , 0, 2
+               ))
+             )
+    )
+
+
+
+
+
+if(empty(items('Apply_to_each')?['PasswordLastSet']), 
+   items('Apply_to_each')?['PasswordLastSet'],
+       addDays(formatDateTime('30/12/1899','dd/MM/yyyy'),
+           int(
+               first
+               (split
+                (items('Apply_to_each')?['PasswordLastSet'], '.')
+                )
+               )
+           ), int(
+               substring(last(
+                   split(
+                       items('Apply_to_each')?['PasswordLastSet'], '.'
+                       )
+                   )
+               )
+             )
+    )
+
+
+
+
+
+if(
+    empty(items('Apply_to_each')?['PasswordLastSet']), 
+    items('Apply_to_each')?['PasswordLastSet'],
+    addSeconds(
+       addDays(formatDateTime(
+           '1/1/1900','dd/MM/yyyy'
+           ),
+           sub(
+               int(
+                   first(
+                       split(
+                           items('Apply_to_each')?['PasswordLastSet'], '.'
+                           )
+                       )
+                   ), 2
+               )
+           ),    int(
+                       substring(
+                           last(
+                               split(
+                                   items('Apply_to_each')?['PasswordLastSet'], '.'
+                                   )
+                               ) , 0, 5
+                           )
+                   )
+        )
+  )
+
+
+
+
+
+
+
+
+If(
+    fm = "New",
+    Patch(
+        DLP_VOILATIONS_FORM_COMMENTS,
+        Defaults(DLP_VOILATIONS_FORM_COMMENTS),
+        {
+            DVF_ID: Value(DataCardValue1.Text),
+            Updated_by: DataCardValue20.Text,
+            Update_Comment: Text("New Record created with DLP_Event_ID:" & DataCardValue1.Text & "
+    <br>BU:" & Text(BUDD.Selected.BU) & "
+    <br>Cyber_Spoc:" & Text(BUDD.Selected.Cyber_COE_SPOC) & "
+    <br>Source:" & DataCardValue10.Text & "
+    <br>First_Manager_ID:" & Text(FirstManagerCB.Selected.Mail) & "
+    <br>First_manager_name:" & DataCardValue2.Text & "
+    <br>Second_Manager_ID:" & Text(SecondManagerCB.Selected.Mail) & "
+    <br>Second_manager_name:" & Text(SecondManagerCB.Selected.DisplayName) & "
+    <br>BU_CEO_ID:" & DataCardValue6.Text & "
+    <br>Alert_Raised_Datetime" & Text(Concatenate(DateValue2.SelectedDate, HourValue2.Selected.Value, MinuteValue2.Selected.Value,"0")) & "
+    <br>Device_Name:" & DataCardValue22.Text & "
+    <br>Channel:" & Text(ChannelDD.Selected.Value) & "
+    <br>Violations For:" & Text(V_ForDD.Selected.Value) & "
+    <br>Data to External:" & Text(ExternalDD.Selected.Value) & "
+    <br>Destination:" & DataCardValue19.Text & "
+    <br>Event_Severity:" & Text(SeverityDD.Selected.Value) & "
+    <br>Event_Action:" & DataCardValue13.Text & "
+    <br>Policy:" & DataCardValue14.Text & "
+    <br>Violation:" & DataCardValue15.Text & "
+    <br>Violation_Type:" & DataCardValue21.Text & "
+    <br>Email_Subject:" & DataCardValue16.Text & "
+    <br>Attached_File_Name:" & DataCardValue17.Text & "
+    <br>Analysis:" & DataCardValue18.Text
+    )}
+    ),
+    Patch(
+        DLP_VOILATIONS_FORM_COMMENTS,
+        Defaults(DLP_VOILATIONS_FORM_COMMENTS),
+        {
+            DVF_ID: Value(DataCardValue1.Text),
+            Updated_by: DataCardValue20.Text,
+            Update_Comment: Text(Concatenate("Updates are as follows:", If(
+                BrowseGallery1.Selected.DLP_Event_ID <> Value(DataCardValue1.Text),
+                "<br>DLP_Event_ID updated. Previous:" & BrowseGallery1.Selected.DLP_Event_ID & ". Updated:" & DataCardValue1.Text, ""
+            ), If(
+                BrowseGallery1.Selected.Business_Unit <> Text(BUDD.Selected.BU),
+                "<br>BU Updated. Previous:" & BrowseGallery1.Selected.Business_Unit & ". Updated:" & Text(BUDD.Selected.BU), ""
+            ), If(
+                BrowseGallery1.Selected.Cyber_SPOC <> DataCardValue3.Text,
+                "<br>Cyber_Spoc Updated. Previous:" & BrowseGallery1.Selected.Cyber_SPOC & ". Updated:" & DataCardValue3.Text, ""
+            ), If(
+                BrowseGallery1.Selected.Source <> DataCardValue10.Text,
+                "<br>Source Updated. Previous:" & BrowseGallery1.Selected.Source & ". Updated:" & DataCardValue10.Text, ""
+            ), If(
+                BrowseGallery1.Selected.First_Manager_ID <> FirstManagerCB.Selected.Mail,
+                "<br>First_Manager_ID Updated. Previous:" & BrowseGallery1.Selected.First_Manager_ID & ". Updated:" & FirstManagerCB.Selected.Mail, ""
+            ), If(
+                BrowseGallery1.Selected.First_manager_name <> DataCardValue2.Text,
+                "<br>First_Manager_Name Updated. Previous:" & BrowseGallery1.Selected.First_manager_name & ". Updated:" & DataCardValue2.Text, ""
+            ), If(
+                BrowseGallery1.Selected.Second_Manager_ID <> SecondManagerCB.Selected.Mail,
+                "<br>Second_Manager_ID Updated. Previous:" & BrowseGallery1.Selected.Second_Manager_ID & ". Updated:" & Text(SecondManagerCB.Selected.Mail), ""
+            ), If(
+                BrowseGallery1.Selected.Second_manager_name <> DataCardValue11.Text,
+                "<br>Second_Manager_Name Updated. Previous:" & BrowseGallery1.Selected.Second_manager_name & ". Updated:" & DataCardValue11.Text, ""
+            ), If(
+                BrowseGallery1.Selected.BU_CEO_ID <> DataCardValue6.Text,
+                "<br>BU_CEO_ID Updated. Previous:" & BrowseGallery1.Selected.BU_CEO_ID & ". Updated:" & DataCardValue6.Text, ""
+            ), If(
+                BrowseGallery1.Selected.Device_Name <> DataCardValue22.Text,
+                "<br>Device_Name Updated. Previous:" & BrowseGallery1.Selected.Device_Name & ". Updated:" & DataCardValue22.Text, ""
+            ), If(
+                BrowseGallery1.Selected.Channel <> ChannelDD.Selected.Value,
+                "<br>Channel Updated. Previous:" & BrowseGallery1.Selected.Channel & ". Updated:" & Text(ChannelDD.Selected.Value), ""
+            ), If(
+                BrowseGallery1.Selected.V_for <> V_ForDD.Selected.Value,
+                "<br>Violations For field Updated. Previous:" & BrowseGallery1.Selected.V_for & ". Updated:" & Text(V_ForDD.Selected.Value), ""
+            ), If(
+                BrowseGallery1.Selected.V_external <> ExternalDD.Selected.Value,
+                "<br>Data To External field Updated. Previous:" & BrowseGallery1.Selected.V_external & ". Updated:" & Text(ExternalDD.Selected.Value), ""
+            ), If(
+                BrowseGallery1.Selected.Destination <> DataCardValue19.Text,
+                "<br>Desitination field Updated. Previous:" & BrowseGallery1.Selected.Destination & ". Updated:" & DataCardValue19.Text, ""
+            ), If(
+                BrowseGallery1.Selected.Event_Severity <> SeverityDD.Selected.Value,
+                "<br>Event_Severity field Updated. Previous:" & BrowseGallery1.Selected.Event_Severity & ". Updated:" & Text(SeverityDD.Selected.Value), ""
+            ), If(
+                BrowseGallery1.Selected.Event_Action <> DataCardValue13.Text,
+                "<br>Event_Action field Updated. Previous:" & BrowseGallery1.Selected.Event_Action & ". Updated:" & DataCardValue13.Text, ""
+            ), If(
+                BrowseGallery1.Selected.Policy <> DataCardValue14.Text,
+                "<br>Policy field Updated. Previous:" & BrowseGallery1.Selected.Policy & ". Updated:" & DataCardValue14.Text, ""
+            ), If(
+                BrowseGallery1.Selected.Voilation <> DataCardValue15.Text,
+                "<br>Voilation field Updated. Previous:" & BrowseGallery1.Selected.Voilation & ". Updated:" & DataCardValue15.Text, ""
+            ), If(
+                BrowseGallery1.Selected.Violation_Type <> DataCardValue21.Text,
+                "<br>Violation_Type field Updated. Previous:" & BrowseGallery1.Selected.Violation_Type & ". Updated:" & DataCardValue21.Text, ""
+            ), If(
+                BrowseGallery1.Selected.Email_Subject <> DataCardValue16.Text,
+                "<br>Email_Subject field Updated. Previous:" & BrowseGallery1.Selected.Email_Subject & ". Updated:" & DataCardValue16.Text, ""
+            ), If(
+                BrowseGallery1.Selected.Attached_File_Name <> DataCardValue17.Text,
+                "<br>Attached_File_Name field Updated. Previous:" & BrowseGallery1.Selected.Attached_File_Name & ". Updated:" & DataCardValue17.Text, ""
+            ), If(
+                BrowseGallery1.Selected.Analysis <> DataCardValue18.Text,
+                "<br>Analysis field Updated. Previous:" & BrowseGallery1.Selected.Analysis & ". Updated:" & DataCardValue18.Text, ""
+            )))
+        }
+    )
+);
+
+
+
+
+
+
+
+
+
+
+Patch(
+            DLP_VOILATIONS_FORM_COMMENTS,
+            Defaults(DLP_VOILATIONS_FORM_COMMENTS),
+            {
+                DVF_ID: Value(DataCardValue26.Text),
+                Updated_by: User().Email,
+                Update_Comment: Concatenate(
+                    "Incident Status updated. <br>Previous:",
+                    Text(BrowseGallery1.Selected.Incident_Status),
+                    "<br>Updated:",
+                    Text(False_positiveDD.Selected.Value),
+                    "<br>Remarks:",
+                    Text(DataCardValue50.Text)
+                )
+            }
+        );
+        Errors(DLP_VOILATIONS_FORM_COMMENTS)
+
+
+
+
+
+
+
+
+
+
+
+If(
+    fm = "New",
+    Text(
+        "New Record created with DLP_Event_ID:" & DataCardValue1.Text & "
+BU:" & Text(BUDD.Selected.BU) & "
+Cyber_Spoc:" & Text(BUDD.Selected.Cyber_COE_SPOC) & "
+Source:" & DataCardValue10.Text & "
+First_Manager_ID:" & Text(FirstManagerCB.Selected.Mail) & "
+First_manager_name:" & DataCardValue2.Text & "
+Second_Manager_ID:" & Text(SecondManagerCB.Selected.Mail) & "
+Second_manager_name:" & Text(SecondManagerCB.Selected.DisplayName) & "
+BU_CEO_ID:" & DataCardValue6.Text & "
+Alert_Raised_Datetime" & Text(
+            Concatenate(
+                DateValue2.SelectedDate,
+                HourValue2.Selected.Value,
+                MinuteValue2.Selected.Value,
+                "0"
+            )
+        ) & "
+Device_Name:" & DataCardValue22.Text & "
+Channel:" & Text(ChannelDD.Selected.Value) & "
+Violations For:" & Text(V_ForDD.Selected.Value) & "
+Data to External:" & Text(ExternalDD.Selected.Value) & "
+Destination:" & DataCardValue19.Text & "
+Event_Severity:" & Text(SeverityDD.Selected.Value) & "
+Event_Action:" & DataCardValue13.Text & "
+Policy:" & DataCardValue14.Text & "
+Violation:" & DataCardValue15.Text & "
+Violation_Type:" & DataCardValue21.Text & "
+Email_Subject:" & DataCardValue16.Text & "
+Attached_File_Name:" & DataCardValue17.Text & "
+Analysis:" & DataCardValue18.Text
+    ),
+    Text(
+        Concatenate(
+            If(
+                BrowseGallery1.Selected.DLP_Event_ID <> Value(DataCardValue1.Text),
+                "
+DLP_Event_ID updated. Previous:" & BrowseGallery1.Selected.DLP_Event_ID & " Updated:" & DataCardValue1.Text,
+                ""
+            ),
+            If(
+                BrowseGallery1.Selected.Business_Unit <> Text(BUDD.Selected.BU),
+                "
+BU Updated. Previous:" & BrowseGallery1.Selected.Business_Unit & " Updated:" & Text(BUDD.Selected.BU),
+                ""
+            ),
+            If(
+                BrowseGallery1.Selected.Cyber_SPOC <> DataCardValue3.Text,
+                "
+Cyber_Spoc Updated. Previous:" & BrowseGallery1.Selected.Cyber_SPOC & " Updated:" & DataCardValue3.Text,
+                ""
+            ),
+            If(
+                BrowseGallery1.Selected.Source <> DataCardValue10.Text,
+                "
+Source Updated. Previous:" & BrowseGallery1.Selected.Source & " Updated:" & DataCardValue10.Text,
+                ""
+            ),
+            If(
+                BrowseGallery1.Selected.First_Manager_ID <> FirstManagerCB.Selected.Mail,
+                "
+First_Manager_ID Updated. Previous:" & BrowseGallery1.Selected.First_Manager_ID & " Updated:" & FirstManagerCB.Selected.Mail,
+                ""
+            ),
+            If(
+                BrowseGallery1.Selected.First_manager_name <> DataCardValue2.Text,
+                "
+First_Manager_Name Updated. Previous:" & BrowseGallery1.Selected.First_manager_name & " Updated:" & DataCardValue2.Text,
+                ""
+            ),
+            If(
+                BrowseGallery1.Selected.Second_Manager_ID <> SecondManagerCB.Selected.Mail,
+                "
+Second_Manager_ID Updated. Previous:" & BrowseGallery1.Selected.Second_Manager_ID & " Updated:" & Text(SecondManagerCB.Selected.Mail),
+                ""
+            ),
+            If(
+                BrowseGallery1.Selected.Second_manager_name <> DataCardValue11.Text,
+                "
+Second_Manager_Name Updated. Previous:" & BrowseGallery1.Selected.Second_manager_name & " Updated:" & DataCardValue11.Text,
+                ""
+            ),
+            If(
+                BrowseGallery1.Selected.BU_CEO_ID <> DataCardValue6.Text,
+                "
+BU_CEO_ID Updated. Previous:" & BrowseGallery1.Selected.BU_CEO_ID & " Updated:" & DataCardValue6.Text,
+                ""
+            ),
+            If(
+                BrowseGallery1.Selected.Device_Name <> DataCardValue22.Text,
+                "
+Device_Name Updated. Previous:" & BrowseGallery1.Selected.Device_Name & " Updated:" & DataCardValue22.Text,
+                ""
+            ),
+            If(
+                BrowseGallery1.Selected.Channel <> ChannelDD.Selected.Value,
+                "
+Channel Updated. Previous:" & BrowseGallery1.Selected.Channel & " Updated:" & Text(ChannelDD.Selected.Value),
+                ""
+            ),
+            If(
+                BrowseGallery1.Selected.V_for <> V_ForDD.Selected.Value,
+                "
+Violations For field Updated. Previous:" & BrowseGallery1.Selected.V_for & " Updated:" & Text(V_ForDD.Selected.Value),
+                ""
+            ),
+            If(
+                BrowseGallery1.Selected.V_external <> ExternalDD.Selected.Value,
+                "
+Data To External field Updated. Previous:" & BrowseGallery1.Selected.V_external & " Updated:" & Text(ExternalDD.Selected.Value),
+                ""
+            ),
+            If(
+                BrowseGallery1.Selected.Destination <> DataCardValue19.Text,
+                "
+Desitination field Updated. Previous:" & BrowseGallery1.Selected.Destination & " Updated:" & DataCardValue19.Text,
+                ""
+            ),
+            If(
+                BrowseGallery1.Selected.Event_Severity <> SeverityDD.Selected.Value,
+                "
+Event_Severity field Updated. Previous:" & BrowseGallery1.Selected.Event_Severity & " Updated:" & Text(SeverityDD.Selected.Value),
+                ""
+            ),
+            If(
+                BrowseGallery1.Selected.Event_Action <> DataCardValue13.Text,
+                "
+Event_Action field Updated. Previous:" & BrowseGallery1.Selected.Event_Action & " Updated:" & DataCardValue13.Text,
+                ""
+            ),
+            If(
+                BrowseGallery1.Selected.Policy <> DataCardValue14.Text,
+                "
+Policy field Updated. Previous:" & BrowseGallery1.Selected.Policy & " Updated:" & DataCardValue14.Text,
+                ""
+            ),
+            If(
+                BrowseGallery1.Selected.Voilation <> DataCardValue15.Text,
+                "
+Voilation field Updated. Previous:" & BrowseGallery1.Selected.Voilation & " Updated:" & DataCardValue15.Text,
+                ""
+            ),
+            If(
+                BrowseGallery1.Selected.Violation_Type <> DataCardValue21.Text,
+                "
+Violation_Type field Updated. Previous:" & BrowseGallery1.Selected.Violation_Type & " Updated:" & DataCardValue21.Text,
+                ""
+            ),
+            If(
+                BrowseGallery1.Selected.Email_Subject <> DataCardValue16.Text,
+                "
+Email_Subject field Updated. Previous:" & BrowseGallery1.Selected.Email_Subject & " Updated:" & DataCardValue16.Text,
+                ""
+            ),
+            If(
+                BrowseGallery1.Selected.Attached_File_Name <> DataCardValue17.Text,
+                "
+Attached_File_Name field Updated. Previous:" & BrowseGallery1.Selected.Attached_File_Name & " Updated:" & DataCardValue17.Text,
+                ""
+            ),
+            If(
+                BrowseGallery1.Selected.Analysis <> DataCardValue18.Text,
+                "
+Analysis field Updated. Previous:" & BrowseGallery1.Selected.Analysis & " Updated:" & DataCardValue18.Text,
+                ""
+            )
+        )
+    )
+)
+
+
+
+
+
+
+
+
+
+
+
+--------------------PBI-------------------------
+
+Fetching IP, it checks if the . Value has 4 columns (num type solution not working)
+if Text.Select([Device Host Name.1],{"0".."9"}) <> null and Text.Select([Device Host Name.2],{"0".."9"}) <> null and Text.Select([Device Host Name.3],{"0".."9"}) <> null  then [Device Host Name.1]&"."&[Device Host Name.2]&"."&[Device Host Name.3]&"ip"
+else  [Device Host Name.1]
+
+Getting Days difference
+Duration.Days(Date.From(Base Date/time) - Date.From(Final Date/Time))
+
+Percentage DAX query
+compliance = {
+    ('common workstations'[Total_onboarded], 'common workstations'[Compliant], 'common workstations'[Non_compliant]),
+    ("100%",FORMAT(CALCULATE('common workstations'[Compliant]/'common workstations'[Total_onboarded]), "00.00%") , FORMAT(CALCULATE('common workstations'[Non_compliant]/'common workstations'[Total_onboarded]), "00.00%"))
+    }
+
+Data-Table DAX query
+Coverage = DATATABLE(
+    "Total Assets as per CMDB", INTEGER,
+    "EDR Onboarded", STRING,
+    "Not Applicable", STRING,
+    "EDR Pending", STRING,
+    {
+        { 10, "B", "C", "D"}
+    }
+    )
+
+Office365Users.SearchUserV2({searchTerm:LookUp(DLP_VOILATIONS_FORM, ID = BrowseGallery1.Selected.ID, Second_Manager_ID)}).value
+
+
+
+
+
+
+
+Get-Item -Path Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*
+foreach($item in $all_item){
+if($item.GetValue("Publisher") -eq "Symantec Corp."){
+$uninstall_string = $item.GetValue("UninstallString") 
+$pass = Read-Host "Password String:" -AsSecureString
+$decrypted = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($pass)
+$decryptedPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($decrypted)
+Write-Output $uninstall_string' /q UNINSTALLPASSWORD="'$decryptedPassword'"'
+$m = 0
+break
+}
+else{
+$m=1
+}
+}
+if ($m -eq 1){
+Write-Output "Symantec Registry not found"}
+
+
+
+
+
+
+$all_item = Get-Item -Path Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*
+foreach($item in $all_item){
+if($item.GetValue("Publisher") -eq "Symantec Corp."){
+$uninstall_string = $item.GetValue("UninstallString") }
+else{}
+}
+Write-Output "Here we can append command $uninstall_string ."
